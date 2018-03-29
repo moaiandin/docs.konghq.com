@@ -67,7 +67,7 @@ This metric contains the ratio of datastore cache hits to the total count of dat
 > Note: Datastore Cache Hit Ratio cannot be calculated for time indices with no hits and no misses.
 
 ## Vitals API
-Vitals data is available via endpoints on Kong’s Admin API. Access to these endpoints may be controlled via Admin API RBAC. The Vitals API is described in the attached OAS (Open API Spec, formerly Swagger) file [vitalsSpec_v0.31.yaml][vitals_spec]
+Vitals data is available via endpoints on Kong’s Admin API. Access to these endpoints may be controlled via Admin API RBAC. The Vitals API is described in the attached OAS (Open API Spec, formerly Swagger) file [vitalsSpec_v0.32.yaml][vitals_spec]
 
 ## Vitals Data Visualization in Kong Admin GUI
 Kong’s Admin GUI includes visualization of Vitals data. Additional visualizations, dashboarding of Vitals data alongside data from other systems, etc., can be achieved using the Vitals API to integrate with common monitoring systems.
@@ -90,4 +90,4 @@ Then, check your log files. If you see `[vitals] kong_vitals_requests_consumers 
 
 Vitals data is purged regularly: 1-second data is purged after one hour, and 1-minute data is purged after 25 hours. Due to limitations in Cassandra 2.x query options, the counter table vitals_consumers is not purged. If it becomes necessary to prune this table, you will need to do so manually.
 
-[vitals_spec]: /docs/enterprise/0.31-x/vitalsSpec_v0.31.yaml
+[vitals_spec]: /docs/enterprise/0.32-x/vitalsSpec_v0.32.yaml
