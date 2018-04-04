@@ -208,6 +208,35 @@ paths:
           description: Invalid query params
         '404':
           description: Unable to find requested service UUID
+  '/status_codes/by_route':
+    get:
+      tags:
+        - cluster
+      summary: Get cluster-wide count of status for a given route
+      description: ''
+      operationId: getStatusCodesByRouteUUID
+      produces:
+        - application/json
+      parameters:
+        - name: routeUUID
+          type: string
+          in: query
+          description: Route UUID to retrieve status codes for
+          required: true
+        - name: interval
+          type: string
+          in: query
+          description: Interval length of requested stats
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StatusCodesByRouteTimeSeriesWithMetadata'
+        '400':
+          description: Invalid query params
+        '404':
+          description: Unable to find requested route UUID
 definitions:
   ClusterVitalsMetadata:
     properties:
@@ -275,6 +304,38 @@ definitions:
       latest_ts:
         type: integer
         example: 1514508480
+  StatusCodesByRouteTimeSeriesWithMetadata:
+    type: object
+    properties:
+      meta:
+        $ref: '#/definitions/StatusCodesByRouteMetadata'
+      stats:
+        $ref: '#/definitions/StatusCodesByRouteStats'
+  StatusCodesByRouteMetadata:
+    properties:
+      entity_type:
+        type: string
+        example: route
+      entity_id:
+        type: string
+        example: <route_id>
+      level:
+        type: string
+        example: cluster
+        enum:
+          - cluster
+      interval:
+        type: string
+        example: seconds
+        enum:
+          - seconds
+          - minutes
+      earliest_ts:
+        type: integer
+        example: 1514508300
+      latest_ts:
+        type: integer
+        example: 1514508480
   ClusterVitalsStatusCodesMetadata:
     properties:
       level:
@@ -317,6 +378,20 @@ definitions:
               - 110
               - 156
   StatusCodesByServiceStats:
+    properties:
+      cluster:
+        type: object
+        description: Vitals status codes data available at the cluster level
+        properties:
+          <timestamp_n>:
+            type: object
+            properties:
+              <status_code>:
+                type: integer
+                description: >-
+                  The total count of a particular status code for the time period
+                example: 1824
+  StatusCodesByRouteStats:
     properties:
       cluster:
         type: object
