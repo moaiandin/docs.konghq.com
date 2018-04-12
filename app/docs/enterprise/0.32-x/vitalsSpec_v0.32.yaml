@@ -179,7 +179,7 @@ paths:
           description: Invalid query params
         '404':
           description: Unable to find requested consumer UUID
-  '/services/{serviceUUID}/status_codes':
+  '/status_codes/by_service':
     get:
       tags:
         - cluster
@@ -191,7 +191,7 @@ paths:
       parameters:
         - name: serviceUUID
           type: string
-          in: path
+          in: query
           description: Service UUID to retrieve status codes for
           required: true
         - name: interval
@@ -203,7 +203,7 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/StatusCodesByServiceTimeSeriesWithMetadata'
+            $ref: '#/definitions/StatusCodesByEntityTimeSeriesWithMetadata'
         '400':
           description: Invalid query params
         '404':
@@ -232,7 +232,7 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/StatusCodesByRouteTimeSeriesWithMetadata'
+            $ref: '#/definitions/StatusCodesByEntityTimeSeriesWithMetadata'
         '400':
           description: Invalid query params
         '404':
@@ -272,21 +272,14 @@ definitions:
           - requests_proxy_total
           - latency_proxy_request_avg_ms
           - latency_upstream_avg_ms
-  StatusCodesByServiceTimeSeriesWithMetadata:
-    type: object
-    properties:
-      meta:
-        $ref: '#/definitions/StatusCodesByServiceMetadata'
-      stats:
-        $ref: '#/definitions/StatusCodesByServiceStats'
-  StatusCodesByServiceMetadata:
+  StatusCodesByEntityMetadata:
     properties:
       entity_type:
         type: string
-        example: service
+        example: service|route
       entity_id:
         type: string
-        example: <service_id>
+        example: <entity_id>
       level:
         type: string
         example: cluster
@@ -304,38 +297,13 @@ definitions:
       latest_ts:
         type: integer
         example: 1514508480
-  StatusCodesByRouteTimeSeriesWithMetadata:
+  StatusCodesByEntityTimeSeriesWithMetadata:
     type: object
     properties:
       meta:
-        $ref: '#/definitions/StatusCodesByRouteMetadata'
+        $ref: '#/definitions/StatusCodesByEntityMetadata'
       stats:
-        $ref: '#/definitions/StatusCodesByRouteStats'
-  StatusCodesByRouteMetadata:
-    properties:
-      entity_type:
-        type: string
-        example: route
-      entity_id:
-        type: string
-        example: <route_id>
-      level:
-        type: string
-        example: cluster
-        enum:
-          - cluster
-      interval:
-        type: string
-        example: seconds
-        enum:
-          - seconds
-          - minutes
-      earliest_ts:
-        type: integer
-        example: 1514508300
-      latest_ts:
-        type: integer
-        example: 1514508480
+        $ref: '#/definitions/StatusCodesByEntityStats'
   ClusterVitalsStatusCodesMetadata:
     properties:
       level:
@@ -377,21 +345,7 @@ definitions:
               - 1146
               - 110
               - 156
-  StatusCodesByServiceStats:
-    properties:
-      cluster:
-        type: object
-        description: Vitals status codes data available at the cluster level
-        properties:
-          <timestamp_n>:
-            type: object
-            properties:
-              <status_code>:
-                type: integer
-                description: >-
-                  The total count of a particular status code for the time period
-                example: 1824
-  StatusCodesByRouteStats:
+  StatusCodesByEntityStats:
     properties:
       cluster:
         type: object
