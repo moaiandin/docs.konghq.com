@@ -297,6 +297,12 @@ definitions:
       latest_ts:
         type: integer
         example: 1514508480
+      stat_labels:
+        type: array
+        items:
+          type: string
+        example:
+          - status_codes_service|route_total
   StatusCodesByEntityTimeSeriesWithMetadata:
     type: object
     properties:
@@ -323,6 +329,12 @@ definitions:
       latest_ts:
         type: integer
         example: 1514508480
+      stat_labels:
+        type: array
+        items:
+          type: string
+        example:
+          - status_code_classes_total
   ClusterVitalsStats:
     properties:
       cluster:
