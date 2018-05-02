@@ -3,7 +3,10 @@ title: Rate Limiting Plugin
 ---
 # Rate Limiting Plugin
 
-The enterprise rate limiting plugin makes a few changes that allow for several benefits over the community version. These changes require a little bit of consideration when configuring and deploying the enterprise rate limiting plugin. Take a moment to read over this Kong blog post on [designing a scalable rate limiting algorithm](https://konghq.com/blog/how-to-design-a-scalable-rate-limiting-algorithm/) and the docs on the underlying [rate limiting library]({% post_url /docs/enterprise/0.31-x/plugins/rate-limiting %}) to familiarize yourself with the underlying differences.
+Here are two informational links that we recommend you read.
+
+- [Designing a scalable rate limiting algorithm](https://konghq.com/blog/how-to-design-a-scalable-rate-limiting-algorithm/)
+- [The rate limiting library]({% post_url /docs/enterprise/latest/plugins/rate-limiting %})
 
 ## Configuration
 
