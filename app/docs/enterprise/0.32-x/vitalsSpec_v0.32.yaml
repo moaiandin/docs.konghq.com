@@ -92,20 +92,20 @@ paths:
             $ref: '#/definitions/NodeVitalsTimeSeriesWithMetadata'
         '400':
           description: Invalid query params
-  '/nodes/{nodeUUID}':
+  '/nodes/{node_id}':
     get:
       tags:
         - nodes
       summary: Get stats for a specific node by UUID
       description: ''
-      operationId: getNodeStatsByUUID
+      operationId: getNodeStatsByID
       produces:
         - application/json
       parameters:
-        - name: nodeUUID
+        - name: node_id
           type: string
           in: path
-          description: Node UUID to retrieve stats for
+          description: Node to retrieve stats for
           required: true
         - name: interval
           in: query
@@ -120,8 +120,8 @@ paths:
         '400':
           description: Invalid query params
         '404':
-          description: Unable to find requested node UUID
-  '/consumers/{consumerUUID}/cluster':
+          description: Unable to find requested node
+  '/consumers/{consumer_id}/cluster':
     get:
       tags:
         - cluster
@@ -131,10 +131,10 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: consumerUUID
+        - name: consumer_id
           type: string
           in: path
-          description: Consumer UUID to retrieve stats for
+          description: Consumer to retrieve stats for
           required: true
         - name: interval
           type: string
@@ -149,8 +149,8 @@ paths:
         '400':
           description: Invalid query params
         '404':
-          description: Unable to find requested consumer UUID
-  '/consumers/{consumerUUID}/nodes':
+          description: Unable to find requested consumer
+  '/consumers/{consumer_id}/nodes':
     get:
       tags:
         - nodes
@@ -160,10 +160,10 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: consumerUUID
+        - name: consumer_id
           type: string
           in: path
-          description: Consumer UUID to retrieve stats for
+          description: Consumer to retrieve stats for
           required: true
         - name: interval
           type: string
@@ -178,21 +178,21 @@ paths:
         '400':
           description: Invalid query params
         '404':
-          description: Unable to find requested consumer UUID
+          description: Unable to find requested consumer
   '/status_codes/by_service':
     get:
       tags:
         - cluster
       summary: Get cluster-wide count of status for a given service
       description: ''
-      operationId: getStatusCodesByServiceUUID
+      operationId: getStatusCodesByService
       produces:
         - application/json
       parameters:
-        - name: serviceUUID
+        - name: service_id
           type: string
           in: query
-          description: Service UUID to retrieve status codes for
+          description: Service to retrieve status codes for
           required: true
         - name: interval
           type: string
@@ -207,21 +207,21 @@ paths:
         '400':
           description: Invalid query params
         '404':
-          description: Unable to find requested service UUID
+          description: Unable to find requested service
   '/status_codes/by_route':
     get:
       tags:
         - cluster
       summary: Get cluster-wide count of status for a given route
       description: ''
-      operationId: getStatusCodesByRouteUUID
+      operationId: getStatusCodesByRoute
       produces:
         - application/json
       parameters:
-        - name: routeUUID
+        - name: route_id
           type: string
           in: query
-          description: Route UUID to retrieve status codes for
+          description: Route to retrieve status codes for
           required: true
         - name: interval
           type: string
@@ -236,7 +236,36 @@ paths:
         '400':
           description: Invalid query params
         '404':
-          description: Unable to find requested route UUID
+          description: Unable to find requested route
+  '/status_codes/by_consumer_and_route':
+    get:
+      tags:
+        - cluster
+      summary: Get status codes for all the routes called by the given consumer in the given timeframe
+      description: ''
+      operationId: getStatusCodesByConsumerAndRoute
+      produces:
+        - application/json
+      parameters:
+        - name: consumer_id
+          type: string
+          in: query
+          description: Consumer to retrieve status codes for
+          required: true
+        - name: interval
+          type: string
+          in: query
+          description: Interval length of requested stats
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StatusCodesByEntityTimeSeriesWithMetadata'
+        '400':
+          description: Invalid query params
+        '404':
+          description: Unable to find requested consumer
 definitions:
   ClusterVitalsMetadata:
     properties:
