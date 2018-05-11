@@ -81,7 +81,7 @@ Timestamps on the x-axis of Vitals charts are displayed either in the browser's 
 Metrics can be displayed on Vitals charts at both node and cluster level. Controls are available to show cluster-wide metrics and/or node-specific metrics. Clicking on individual nodes will toggle the display of data from those nodes. Nodes can be identified by a unique Kong node identifier, by hostname, or by a combination of the two.
 
 ### Status Code Data
-Visualizations of cluster-wide status code classes (1xx, 2xx, 3xx, 4xx, 5xx) can be found in Status Codes page of the Admin GUI. This page contains the counts of status code classes graphed over time, as well as the ratio of code classes to total requests. Note: this page does not include non-standard code classes (6xx, 7xx, etc.) Individual status code data can be view in the Consumer, Route, and Service details pages under the Activity tab. Both standard and non-standard status codes are visible in these views.
+Visualizations of cluster-wide status code classes (1xx, 2xx, 3xx, 4xx, 5xx) can be found in the Status Codes page of the Admin GUI. This page contains the counts of status code classes graphed over time, as well as the ratio of code classes to total requests. Note: this page does not include non-standard code classes (6xx, 7xx, etc.) Individual status code data can be viewed in the Consumer, Route, and Service details pages under the Activity tab. Both standard and non-standard status codes are visible in these views.
 
 ## Known Issues
 Vitals data does not appear in the Admin UI or the API
