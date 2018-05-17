@@ -37,34 +37,74 @@ All metrics are collected at 1-second intervals and aggregated into 1-minute int
 
 Metrics are tracked for each node in a cluster as well as for the cluster as a whole. In Kong, a node is a running process with a unique identifier, configuration, cache layout, and connections to both Kong’s datastores and the upstream APIs it proxies. Note that node identifiers are unique to the process, and not to the host on which the process runs. In other words, each Kong restart results in a new node, and therefore a new node ID.
 
-### Request Counts
-#### Total Requests
-This metric is the count of all API proxy requests received. This includes requests that were rejected due to rate-limiting, failed authentication, etc.
+### Health Metrics
 
-#### Requests Per Consumer
-This metric is the count of all API proxy requests received from each specific consumer. Consumers are identified by credentials in their requests (e.g., API key, OAuth token, etc) as required by the Kong Auth plugin(s) in use.
-
-### Latency
+#### Latency
 Note: The Vitals API may return null for Latency metrics - this occurs when no API requests were proxied during the timeframe. Null latencies are not graphed in Kong’s Admin GUI - periods with null latencies will appear as a gap in Vitals charts.
 
-#### Proxy Latency (Request)
+##### Proxy Latency (Request)
 These metrics are the min, max, and average values for the time, in milliseconds, that the Kong proxy spends processing API proxy requests. This includes time to execute plugins that run in the access phase as well as DNS lookup time. This does not include time spent in Kong’s load balancer, time spent sending the request to the upstream, or time spent on the response.
+
+These metrics are referenced in the Vitals API with the following labels: `latency_proxy_request_min_ms`, `latency_proxy_request_max_ms`, `latency_proxy_request_avg_ms`
 
 Latency is not reported when a request is a prematurely ended by Kong (e.g., bad auth, rate limited, etc.) - note that this differs from the “Total Requests” metric that does count such requests.
 
-#### Upstream Latency
+##### Upstream Latency
 These metrics are the min, max, and average values for the time elapsed, in milliseconds, between Kong sending requests upstream and Kong receiving the first bytes of responses from upstream.
 
-### Datastore Cache
-Datastore Cache Hit/Miss
+These metrics are referenced in the Vitals API with the following labels: `latency_upstream_min_ms`, `latency_upstream_max_ms`, `latency_upstream_avg_ms`
+
+#### Datastore Cache
+##### Datastore Cache Hit/Miss
 These metrics are the count of requests to Kong's node-level datastore cache. When Kong workers need configuration information to respond to a given API proxy request, they first check their worker-specific cache (also known as L1 cache), then if the information isn’t available they check the node-wide datastore cache (also known as L2 cache). If neither cache contains the necessary information, Kong requests it from the datastore.
 
 A “Hit” indicates that an entity was retrieved from the data store cache. A “Miss” indicates that the record had to be fetched from the datastore. Not every API request will result in datastore cache access - some entities will be retrieved from Kong's worker-specific cache memory.
 
-#### Datastore Cache Hit Ratio
+These metrics are referenced in the Vitals API with the following labels: `cache_datastore_hits_total`, `cache_datastore_misses_total`
+
+##### Datastore Cache Hit Ratio
 This metric contains the ratio of datastore cache hits to the total count of datastore cache requests.
 
 > Note: Datastore Cache Hit Ratio cannot be calculated for time indices with no hits and no misses.
+
+### Traffic Metrics
+
+#### Request Counts
+##### Total Requests
+This metric is the count of all API proxy requests received. This includes requests that were rejected due to rate-limiting, failed authentication, etc.
+
+This metric is referenced in the Vitals API with the following label: `requests_proxy_total`
+
+##### Requests Per Consumer
+This metric is the count of all API proxy requests received from each specific consumer. Consumers are identified by credentials in their requests (e.g., API key, OAuth token, etc) as required by the Kong Auth plugin(s) in use.
+
+This metric is referenced in the Vitals API with the following label: `requests_consumer_total`
+
+#### Status Codes
+##### Total Status Code Classes
+This metric is the count of all status codes grouped by status code class (e.g. 4xx, 5xx).
+
+This metric is referenced in the Vitals API with the following label: `status_code_classes_total`
+
+##### Total Status Codes Per Service
+This metric is the total count of each specific status code for a given service.
+
+This metric is referenced in the Vitals API with the following label: `status_codes_per_service_total`
+
+##### Total Status Codes Per Route
+This metric is the total count of each specific status code for a given route.
+
+This metric is referenced in the Vitals API with the following label: `status_codes_per_route_total`
+
+##### Total Status Codes Per Consumer
+This metric is the total count of each specific status code for a given consumer.
+
+This metric is referenced in the Vitals API with the following label: `status_codes_per_consumer_total`
+
+##### Total Status Codes Per Consumer Per Route
+This metric is the total count of each specific status code for a given consumer and route.
+
+This metric is referenced in the Vitals API with the following label: `status_codes_per_consumer_route_total`
 
 ## Vitals API
 Vitals data is available via endpoints on Kong’s Admin API. Access to these endpoints may be controlled via Admin API RBAC. The Vitals API is described in the attached OAS (Open API Spec, formerly Swagger) file [vitalsSpec_v0.32.yaml][vitals_spec]
