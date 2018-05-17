@@ -29,7 +29,7 @@ High ulimit systemvalue, possibly >=65535 . A higher limit value will allow Kong
 ## High Availability
 
 - Instances with multiple cores are required. Kong, by leveraging the underlying Nginx runtime, will start a worker process for each core. On systems with multiple cores a worker crash will not badly affect the system since the other workers can process the ongoing HTTP requests until the crashed worker is being automatically replaced with a new one.
-- At least 2 nodes/instances of Kong, behind a load balancer (Nginx, HAProxy, AWS ELB or similar). This prevents downtime if a Kong node crashes, since the other nodes can process the incoming HTTP requests. If Vitals is on and a node crashes, then the Vitals data that was cached in memory but not yet persisted to the datastore will be lost. The number of instances behind the load balancer should increase with the number of incoming requests, to avoid the scenario when after a node crashes the sudden increase of load to the remaining nodes will effectively DDoS them and make the other nodes crash too.
+- At least 2 nodes/instances of Kong, behind a load balancer (Nginx, HAProxy, AWS ELB or similar). This prevents downtime if a Kong node crashes, since the other nodes can process the incoming HTTP requests. The number of instances behind the load balancer should increase with the number of incoming requests, to avoid the scenario when after a node crashes the sudden increase of load to the remaining nodes will effectively DDoS them and make the other nodes crash too. Note: If Vitals is on and a node crashes, then the Vitals data that was cached in memory but not yet persisted to the datastore will be lost. 
 
 ## Scaling Kong
 
@@ -107,7 +107,7 @@ Upgrading to different major versions (ie, from v0.8.0 to v0.9.1, or from 0.9.0 
 
 Prior to Kong CE 0.11 and Kong EE 0.29, nodes automatically ran migrations when started. On later versions, administrators should run migrations manually before starting nodes.
 
-Kong can keep processing existing consumers even if the datastore is down, since it caches the used datastore entities in memory. If Vitals is on and the datastore is disconnected, then Vitals data collected while the datastore is disconnected will not be persisted. To upgrade between major versions:
+Kong can keep processing existing consumers even if the datastore is down, since it caches the used datastore entities in memory. To upgrade between major versions:
 
 1. Disconnect the datastore from the current Kong cluster by setting up the appropriate firewall setting or updating the appropriate security group. 
 2. Kong will now rely on its internal cache to serve existing requests.
@@ -118,7 +118,9 @@ Kong can keep processing existing consumers even if the datastore is down, since
 
 Upgrades between major versions need to be planned in advance as they involve downtime for new consumers that have not been cached in memory yet, and because the Admin API won’t be available on the old cluster for the entire process.
 
-There are plans in the roadmap to improve this process.
+Note: During an upgrade, the cluster that is processing requests while disconnected from the datastore will not be able to persist Vitals data.
+
+There are plans in the roadmap to improve the upgrade process.
 
 External Links
 
