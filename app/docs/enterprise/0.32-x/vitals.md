@@ -31,16 +31,23 @@ $ export KONG_VITALS=off
 As with other Kong configurations, your changes take effect on kong reload or kong restart.
 
 ## Vitals Metrics
-Below is a list of metrics that Vitals currently collects. More metrics and dimensions will be added over time. To request additional metrics and dimensions, please contact Kong Support.
+Below is a list of metrics that Vitals collects. They fall into two categories:
+
+* Health Metrics - for monitoring the health of your Kong cluster
+* Traffic Metrics - for monitoring the usage of your upstream services
 
 All metrics are collected at 1-second intervals and aggregated into 1-minute intervals. The 1-second intervals are retained for one hour. The 1-minute intervals are retained for 25 hours. If you require access to this data for long periods of time, you can use the Vitals API to pull it out of Kong and into the data retention tool of your choice.
 
-Metrics are tracked for each node in a cluster as well as for the cluster as a whole. In Kong, a node is a running process with a unique identifier, configuration, cache layout, and connections to both Kong’s datastores and the upstream APIs it proxies. Note that node identifiers are unique to the process, and not to the host on which the process runs. In other words, each Kong restart results in a new node, and therefore a new node ID.
+To request additional metrics and dimensions, please contact Kong Support.
 
 ### Health Metrics
+Health metrics give insight into the performance of your Kong cluster; for example, how many requests it is processing and the latency on those requests.
+
+Health metrics are tracked for each node in a cluster as well as for the cluster as a whole. In Kong, a node is a running process with a unique identifier, configuration, cache layout, and connections to both Kong’s datastores and the upstream APIs it proxies. Note that node identifiers are unique to the process, and not to the host on which the process runs. In other words, each Kong restart results in a new node, and therefore a new node ID.
+
 
 #### Latency
-Note: The Vitals API may return null for Latency metrics - this occurs when no API requests were proxied during the timeframe. Null latencies are not graphed in Kong’s Admin GUI - periods with null latencies will appear as a gap in Vitals charts.
+Note: The Vitals API may return null for Latency metrics - this occurs when no API requests were proxied during the timeframe. Null latencies are not graphed in Kong’s Admin GUI - periods with null latencies appear as gaps in Vitals charts.
 
 ##### Proxy Latency (Request)
 These metrics are the min, max, and average values for the time, in milliseconds, that the Kong proxy spends processing API proxy requests. This includes time to execute plugins that run in the access phase as well as DNS lookup time. This does not include time spent in Kong’s load balancer, time spent sending the request to the upstream, or time spent on the response.
@@ -68,6 +75,7 @@ This metric contains the ratio of datastore cache hits to the total count of dat
 > Note: Datastore Cache Hit Ratio cannot be calculated for time indices with no hits and no misses.
 
 ### Traffic Metrics
+Traffic metrics provide insight into which of your services are being used, and by whom, and how they are responding.
 
 #### Request Counts
 ##### Total Requests
