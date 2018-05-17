@@ -152,6 +152,7 @@ paths:
           description: Unable to find requested consumer
   '/consumers/{consumer_id}/nodes':
     get:
+      deprecated: true
       tags:
         - nodes
       summary: Get count of requests for the given consumer on each node
